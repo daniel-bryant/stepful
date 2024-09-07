@@ -10,4 +10,12 @@ Rails.application.routes.draw do
 
   mount Rswag::Ui::Engine => '/docs'
   mount Rswag::Api::Engine => '/docs'
+
+  resources :coaches, only: [:index] do
+    resources :slots, only: [:index, :create], controller: 'coach_slots'
+  end
+
+  resources :students, only: [] do
+    resources :slots, only: [:index, :update], controller: 'student_slots'
+  end
 end

@@ -21,6 +21,66 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
+      components: {
+        schemas: {
+          Coach: {
+            type: 'object',
+            additionalProperties: false,
+            required: [:id, :name, :slots],
+            properties: {
+              id: {
+                type: :integer,
+              },
+              name: {
+                type: :string,
+              },
+              slots: {
+                type: :array,
+                items: { '$ref' => '#/components/schemas/Slot' },
+              },
+            },
+          },
+          Slot: {
+            type: 'object',
+            additionalProperties: false,
+            required: [:id, :start, :end],
+            properties: {
+              id: {
+                type: :integer,
+              },
+              title: {
+                type: :string,
+              },
+              phone: {
+                type: :string,
+              },
+              start: {
+                type: :string,
+              },
+              end: {
+                type: :string,
+              },
+            },
+          },
+          Student: {
+            type: 'object',
+            additionalProperties: false,
+            required: [:id, :name, :slots],
+            properties: {
+              id: {
+                type: :integer,
+              },
+              name: {
+                type: :string,
+              },
+              slots: {
+                type: :array,
+                items: { '$ref' => '#/components/schemas/Slot' },
+              },
+            },
+          },
+        },
+      },
       paths: {},
       servers: [
         {

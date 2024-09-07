@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_06_184436) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_06_200319) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "btree_gist"
   enable_extension "plpgsql"
+
+  create_table "slots", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "coach_id", null: false
+    t.bigint "student_id"
+    t.tsrange "duration", null: false
+
+    t.exclusion_constraint "coach_id WITH =, duration WITH &&", using: :gist, name: "no_coach_slot_overlap"
+    t.exclusion_constraint "student_id WITH =, duration WITH &&", using: :gist, name: "no_student_slot_overlap"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -21,4 +33,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_06_184436) do
     t.string "name", null: false
     t.string "phone", null: false
   end
+
+  add_foreign_key "slots", "users", column: "coach_id"
+  add_foreign_key "slots", "users", column: "student_id"
 end
